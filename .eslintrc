@@ -1,0 +1,21 @@
+{
+  "extends": [
+    "@xinghunm/eslint-config",
+    "plugin:prettier/recommended",
+    "prettier/react"
+  ],
+  "parser": "babel-eslint",
+  "plugins": ["react-hooks"],
+  "env": {
+    "browser": true,
+    "node": true
+  },
+  "settings": {
+    "import/resolver": {
+      "alias": {
+        "map": [["src", "./src"]],
+        "extensions": [".mjs", ".ts", ".tsx", ".js", ".jsx", ".json"]
+      }
+    }
+  }
+}
