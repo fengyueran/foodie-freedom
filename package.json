@@ -2,16 +2,60 @@
   "name": "foodie-freedom",
   "version": "0.0.1",
   "private": true,
+  "main": "./electron/main.js",
   "dependencies": {
+    "electron": "^6.0.12",
     "react": "^16.8.5",
     "react-dom": "^16.8.5"
   },
   "scripts": {
     "start": "PORT=1989 react-app-rewired start",
     "build": "react-app-rewired build",
+    "electron": "NODE_ENV=development electron .",
     "test": "react-app-rewired test",
     "coverage": "react-app-rewired test --coverage",
     "analyze": "source-map-explorer 'build/static/js/*.js'"
+  },
+  "build": {
+    "productName": "dvfcloud",
+    "copyright": "CopyRight @2019 CuraCloud",
+    "appId": "curacloud.dvfcloud",
+    "buildDependenciesFromSource": false,
+    "nodeGypRebuild": "false",
+    "npmRebuild": "false",
+    "mac": {
+      "category": "Utility",
+      "target": [
+        "dmg"
+      ],
+      "icon": "build/dvfcloud.icns"
+    },
+    "linux": {
+      "category": "Utility",
+      "target": [
+        "deb"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/dvfcloud.ico"
+    },
+    "files": [
+      {
+        "from": "./",
+        "to": "./",
+        "filter": [
+          "**/*",
+          "!node_modules"
+        ]
+      }
+    ],
+    "directories": {
+      "buildResources": "public",
+      "output": "dist"
+    }
   },
   "devDependencies": {
     "@babel/plugin-proposal-decorators": "^7.4.0",
