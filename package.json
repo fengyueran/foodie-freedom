@@ -1,7 +1,9 @@
 {
-  "name": "react-app-template-simple",
+  "name": "foodie-freedom",
   "version": "0.0.1",
   "private": true,
+  "main": "./electron/main.js",
+  "homepage": "./",
   "dependencies": {
     "react": "^16.8.5",
     "react-dom": "^16.8.5"
@@ -9,11 +11,59 @@
   "scripts": {
     "start": "PORT=1989 react-app-rewired start",
     "build": "react-app-rewired build",
+    "electron": "NODE_ENV=development electron .",
     "test": "react-app-rewired test",
     "coverage": "react-app-rewired test --coverage",
-    "analyze": "source-map-explorer 'build/static/js/*.js'"
+    "analyze": "source-map-explorer 'build/static/js/*.js'",
+    "pre-pack": "rm -rf build dist && yarn build",
+    "packer-mac": "pre-pack && electron-builder build -c.extraMetadata=build/electron/main.js --m",
+    "packer-win": "pre-pack && electron-builder build -c.extraMetadata=build/electron/main.js --win"
+  },
+  "build": {
+    "productName": "Foodie",
+    "copyright": "CopyRight @2019 foodie",
+    "appId": "foodie.xinghunm",
+    "buildDependenciesFromSource": false,
+    "nodeGypRebuild": "false",
+    "npmRebuild": "false",
+    "mac": {
+      "category": "Utility",
+      "target": [
+        "dmg"
+      ],
+      "icon": "build/dvfcloud.icns"
+    },
+    "linux": {
+      "category": "Utility",
+      "target": [
+        "deb"
+      ]
+    },
+    "win": {
+      "target": [
+        "nsis"
+      ],
+      "icon": "build/dvfcloud.ico"
+    },
+    "files": [
+      {
+        "from": "./",
+        "to": "./",
+        "filter": [
+          "**/*",
+          "!node_modules",
+          "!src"
+        ]
+      }
+    ],
+    "directories": {
+      "buildResources": "public",
+      "output": "dist"
+    }
   },
   "devDependencies": {
+    "electron": "^6.0.12",
+    "electron-builder": "^21.2.0",
     "@babel/plugin-proposal-decorators": "^7.4.0",
     "@xinghunm/eslint-config": "0.0.8",
     "babel-plugin-import": "^1.11.0",
