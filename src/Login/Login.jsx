@@ -138,13 +138,13 @@ const Login = ({ handleCancel }) => {
       <Container>
         <Content>
           <InputWrapper>
-            <Input placeholder="邮箱" ref={emailElRef} />
+            <Input placeholder="手机号" ref={emailElRef} />
           </InputWrapper>
           <Sizer size={20}>
             {isMissEmail && <MissHint>请输入邮箱</MissHint>}
           </Sizer>
           <InputWrapper>
-            <Input placeholder="密码" ref={passwordElRef} />
+            <Input placeholder="密码或验证码" ref={passwordElRef} />
           </InputWrapper>
           <Sizer size={30}>
             {isMissPassword && <MissHint>请输入密码</MissHint>}
