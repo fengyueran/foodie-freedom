@@ -5,8 +5,11 @@
   "main": "./electron/main.js",
   "homepage": "./",
   "dependencies": {
+    "antd": "^3.23.6",
+    "prop-types": "^15.7.2",
     "react": "^16.8.5",
-    "react-dom": "^16.8.5"
+    "react-dom": "^16.8.5",
+    "styled-components": "^4.4.0"
   },
   "scripts": {
     "start": "PORT=1989 react-app-rewired start",
@@ -62,13 +65,13 @@
     }
   },
   "devDependencies": {
-    "electron": "^6.0.12",
-    "electron-builder": "^21.2.0",
     "@babel/plugin-proposal-decorators": "^7.4.0",
     "@xinghunm/eslint-config": "0.0.8",
     "babel-plugin-import": "^1.11.0",
     "circular-dependency-plugin": "^5.0.2",
     "customize-cra": "^0.2.12",
+    "electron": "^6.0.12",
+    "electron-builder": "^21.2.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",
     "eslint-import-resolver-alias": "^1.1.2",

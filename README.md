@@ -1,2 +1,1 @@
-# react-app-template-simple
-react-app-template-simple
+#自动报名霸王餐
