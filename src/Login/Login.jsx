@@ -4,6 +4,7 @@ import styled from 'styled-components';
 import { Input } from 'antd';
 import { Button, utils } from '@xinghunm/widgets';
 import LoginBG from './LoginBG';
+import Loading from '../Loading';
 
 const Mask = styled.div`
   width: 100%;
@@ -184,6 +185,7 @@ const Login = ({ onLoginSuccess }) => {
         <Sun />
         <Cloud />
       </Container>
+      <Loading tip="模拟登录中..." />
     </Mask>
   );
 };
