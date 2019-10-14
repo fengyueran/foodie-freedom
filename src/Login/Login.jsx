@@ -109,7 +109,7 @@ const LoginErrorHint = styled.div`
   visibility: ${props => (props.isLoginError ? 'visible' : 'hidden')};
 `;
 
-const Login = ({ handleCancel }) => {
+const Login = ({ onLoginSuccess }) => {
   const [isMissEmail, setIsMissEmail] = useState(false);
   const [isMissPassword, setIsMissPassword] = useState(false);
   const [isLoginError, setIsLoginError] = useState(false);
@@ -144,12 +144,13 @@ const Login = ({ handleCancel }) => {
       window.Electron.onLogin((event, isLoginSuccess) => {
         if (isLoginSuccess) {
           console.log('data', isLoginSuccess);
+          onLoginSuccess();
         } else {
           setIsLoginError(true);
         }
       });
     }
-  }, []);
+  }, [onLoginSuccess]);
   return (
     <Mask>
       <LoginBG />
@@ -188,7 +189,7 @@ const Login = ({ handleCancel }) => {
 };
 
 Login.propTypes = {
-  handleCancel: PropTypes.func.isRequired
+  onLoginSuccess: PropTypes.func.isRequired
 };
 
 export default Login;
