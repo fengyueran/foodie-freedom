@@ -1,25 +1,18 @@
 import React from 'react';
+import styled from 'styled-components';
+import EnrollPage from './Enroll';
 
-import logo from './logo.svg';
-import './App.css';
-
+const Root = styled.div`
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  height: 100vh;
+  width: 100vw;
+`;
 const App = () => (
-  <div className="App">
-    <header className="App-header">
-      <img src={logo} className="App-logo" alt="logo" />
-      <p>
-        Edit <code>src/App.js</code> and save to reload.
-      </p>
-      <a
-        className="App-link"
-        href="https://reactjs.org"
-        target="_blank"
-        rel="noopener noreferrer"
-      >
-        Learn React
-      </a>
-    </header>
-  </div>
+  <Root>
+    <EnrollPage />
+  </Root>
 );
 
 export default App;
