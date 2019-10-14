@@ -1,4 +1,4 @@
-import React, { useState, useRef } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Input } from 'antd';
@@ -115,41 +115,67 @@ const Login = ({ handleCancel }) => {
   const [isLoginError, setIsLoginError] = useState(false);
   const emailElRef = useRef();
   const passwordElRef = useRef();
+  const oldPhoneNum = localStorage.getItem('phone');
+  const oldPassword = localStorage.getItem('password');
   const submit = () => {
     setIsLoginError(false);
-    if (emailElRef.current.input.value === '') {
+    const phoneNum = emailElRef.current.input.value;
+    const password = passwordElRef.current.input.value;
+    if (phoneNum === '') {
       setIsMissEmail(true);
     } else {
       setIsMissEmail(false);
-      if (passwordElRef.current.input.value === '') {
+      if (password === '') {
         setIsMissPassword(true);
       } else {
         setIsMissPassword(false);
-        setIsLoginError(true);
+        localStorage.setItem('phone', phoneNum);
+        localStorage.setItem('password', password);
+        // setIsLoginError(true);
+        if (window.Electron) {
+          window.Electron.handleLogin(phoneNum, password);
+        }
       }
     }
   };
-  const closeErrorHint = () => {
-    setIsLoginError(false);
-  };
+
+  useEffect(() => {
+    if (window.Electron) {
+      window.Electron.onLogin((event, isLoginSuccess) => {
+        if (isLoginSuccess) {
+          console.log('data', isLoginSuccess);
+        } else {
+          setIsLoginError(true);
+        }
+      });
+    }
+  }, []);
   return (
     <Mask>
       <LoginBG />
       <Container>
         <Content>
           <InputWrapper>
-            <Input placeholder="手机号" ref={emailElRef} />
+            <Input
+              placeholder="手机号"
+              ref={emailElRef}
+              defaultValue={oldPhoneNum}
+            />
           </InputWrapper>
           <Sizer size={20}>
             {isMissEmail && <MissHint>请输入邮箱</MissHint>}
           </Sizer>
           <InputWrapper>
-            <Input placeholder="密码或验证码" ref={passwordElRef} />
+            <Input
+              placeholder="密码或验证码"
+              ref={passwordElRef}
+              defaultValue={oldPassword}
+            />
           </InputWrapper>
           <Sizer size={30}>
             {isMissPassword && <MissHint>请输入密码</MissHint>}
           </Sizer>
-          <BtnWrapper>登录</BtnWrapper>
+          <BtnWrapper onClick={submit}>登录</BtnWrapper>
           <LoginErrorHint isLoginError={isLoginError}>
             账号或密码错误。
           </LoginErrorHint>

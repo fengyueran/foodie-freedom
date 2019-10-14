@@ -1,9 +1,10 @@
 /* eslint-disable import/no-extraneous-dependencies */
 // Modules to control application life and create native browser window
 const electron = require('electron');
-
-const { app, BrowserWindow } = require('electron');
 const path = require('path');
+
+const { app, BrowserWindow, ipcMain } = electron;
+const handleLogin = require('./auto-enroll/login');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -59,4 +60,16 @@ app.on('activate', () => {
   // On macOS it's common to re-create a window in the app when the
   // dock icon is clicked and there are no other windows open.
   if (mainWindow === null) createWindow();
+});
+
+ipcMain.on('LOGIN', async (event, phoneNum, password) => {
+  try {
+    await handleLogin(phoneNum, password);
+    const isLoginSuccess = true;
+    event.sender.send('LOGIN_FINISH', isLoginSuccess);
+  } catch (e) {
+    console.log('Login Error:', e);
+    const isLoginSuccess = false;
+    event.sender.send('LOGIN_FINISH', isLoginSuccess);
+  }
 });
