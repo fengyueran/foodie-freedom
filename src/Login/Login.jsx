@@ -114,6 +114,7 @@ const Login = ({ onLoginSuccess }) => {
   const [isMissEmail, setIsMissEmail] = useState(false);
   const [isMissPassword, setIsMissPassword] = useState(false);
   const [isLoginError, setIsLoginError] = useState(false);
+  const [isLogining, setIsLogining] = useState(false);
   const emailElRef = useRef();
   const passwordElRef = useRef();
   const oldPhoneNum = localStorage.getItem('phone');
@@ -132,7 +133,7 @@ const Login = ({ onLoginSuccess }) => {
         setIsMissPassword(false);
         localStorage.setItem('phone', phoneNum);
         localStorage.setItem('password', password);
-        // setIsLoginError(true);
+        setIsLogining(true);
         if (window.Electron) {
           window.Electron.handleLogin(phoneNum, password);
         }
@@ -143,6 +144,7 @@ const Login = ({ onLoginSuccess }) => {
   useEffect(() => {
     if (window.Electron) {
       window.Electron.onLogin((event, isLoginSuccess) => {
+        setIsLogining(false);
         if (isLoginSuccess) {
           console.log('data', isLoginSuccess);
           onLoginSuccess();
@@ -185,7 +187,7 @@ const Login = ({ onLoginSuccess }) => {
         <Sun />
         <Cloud />
       </Container>
-      <Loading tip="模拟登录中..." />
+      {isLogining && <Loading tip="模拟登录中..." />}
     </Mask>
   );
 };

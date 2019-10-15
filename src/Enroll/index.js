@@ -1,1 +1,1 @@
-export { default } from './Enroll';
+export { default } from './EnrollPage';
