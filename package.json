@@ -7,6 +7,7 @@
   "dependencies": {
     "@xinghunm/widgets": "^0.0.27",
     "antd": "^3.23.6",
+    "prop-types": "^15.7.2",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "styled-components": "^4.4.0"
