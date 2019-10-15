@@ -8,6 +8,7 @@
     "@xinghunm/widgets": "^0.0.27",
     "antd": "^3.23.6",
     "prop-types": "^15.7.2",
+    "puppeteer": "^1.20.0",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "styled-components": "^4.4.0"
@@ -20,8 +21,8 @@
     "coverage": "react-app-rewired test --coverage",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "pre-pack": "rm -rf build dist && yarn build",
-    "packer-mac": "pre-pack && electron-builder build -c.extraMetadata=build/electron/main.js --m",
-    "packer-win": "pre-pack && electron-builder build -c.extraMetadata=build/electron/main.js --win"
+    "packer-mac": "yarn pre-pack && electron-builder build -c.extraMetadata=build/electron/main.js --m",
+    "packer-win": "yarn pre-pack && electron-builder build -c.extraMetadata=build/electron/main.js --win"
   },
   "build": {
     "productName": "Foodie",

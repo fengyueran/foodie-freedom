@@ -8,6 +8,7 @@ const Container = styled(VerticalBox)`
   margin-right: auto;
   margin-left: auto;
   height: 100%;
+  padding: 20px;
   @media (hover: none) {
     padding: 0;
   }
@@ -39,12 +40,13 @@ const SeparateBar = styled.div`
 const HeaderTitle = styled.div`
   position: relative;
   color: #457fca;
+  padding: 8px 0;
   ::before {
     position: absolute;
     width: 2px;
     height: 26px;
     left: -15px;
-    top: 0;
+    top: 8px;
     content: '';
     background-color: #457fca;
   }
@@ -57,12 +59,28 @@ const TableContainer = styled.div`
   height: 100%;
 `;
 
+const columns = [
+  {
+    name: '',
+    width: '10px'
+  },
+  {
+    name: '#',
+    dataIndex: 'name',
+    width: '50%'
+  },
+  {
+    name: '题名',
+    width: '50%',
+    dataIndex: 'status'
+  }
+];
+
 const propTypes = {
-  columnsData: PropTypes.array.isRequired,
-  questions: PropTypes.array.isRequired
+  data: PropTypes.array.isRequired
 };
 
-const ResultList = ({ columnsData, questions }) => {
+const ResultList = ({ data }) => {
   return (
     <Container>
       <Header>
@@ -73,11 +91,11 @@ const ResultList = ({ columnsData, questions }) => {
       </Header>
       <TableContainer>
         <Table
-          columns={columnsData}
-          dataSource={questions}
+          columns={columns}
+          dataSource={data}
           tableClass="overflow-x: hidden;"
           pagination={{
-            pageSize: 10000000
+            pageSize: 10
           }}
         />
       </TableContainer>

@@ -11,12 +11,17 @@ const Column = styled.div`
   height: 100%;
   background: #f0f3f5;
 `;
-
+const data = [
+  {
+    name: 'abc',
+    status: 'SUCCESS'
+  }
+];
 const EnrollPage = () => (
   <Column>
     <TopBar />
     {/* <Particle /> */}
-    <ResultList />
+    <ResultList data={data} />
   </Column>
 );
 
