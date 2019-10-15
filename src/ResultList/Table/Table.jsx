@@ -82,6 +82,7 @@ const TableHeadCell = styled.th`
   padding: 0 8px;
   height: 0;
   line-height: 0;
+  text-align: left;
   ::before {
     top: 0;
     height: 48px;
@@ -128,7 +129,7 @@ const Table = ({
   pagination,
   tableClass
 }) => {
-  const [currentPage, setCurrentPage] = useState(0);
+  const [currentPage, setCurrentPage] = useState(1);
   const { current, align } = pagination;
   if (current && current !== currentPage) {
     setCurrentPage(current);

@@ -55,7 +55,11 @@ const StyledButton = styled(Button)`
 `;
 
 const TitleBar = () => {
-  const handleClick = () => {};
+  const handleClick = () => {
+    if (window.Electron) {
+      window.Electron.enroll();
+    }
+  };
   return (
     <Column>
       <Row>

@@ -65,13 +65,11 @@ const columns = [
     width: '10px'
   },
   {
-    name: '#',
-    dataIndex: 'name',
-    width: '50%'
+    name: '店名',
+    dataIndex: 'name'
   },
   {
-    name: '题名',
-    width: '50%',
+    name: '状态',
     dataIndex: 'status'
   }
 ];

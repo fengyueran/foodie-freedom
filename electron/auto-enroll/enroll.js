@@ -2,6 +2,7 @@ const fs = require('fs');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const axios = require('axios');
+const { app } = require('electron'); //eslint-disable-line
 const { DA_ZONG_URL, LOGIN_URL, MEALS_URL } = require('./config');
 
 const autoLogin = async (page, phone = '13141234125', vertifyCode) => {
@@ -226,9 +227,11 @@ const getCookie = async () => {
   }
 };
 
-const start = async () => {
+const enroll = async () => {
   try {
     console.log('Start get cookie...');
+    console.log('patn', app.getPath('userData'));
+
     const cookie = await getCookie();
     console.log('Get cookie success!\n');
 
@@ -250,4 +253,4 @@ const start = async () => {
   }
 };
 
-start();
+module.exports = enroll;
