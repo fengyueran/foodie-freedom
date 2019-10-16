@@ -2,7 +2,7 @@ const fs = require('fs');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const axios = require('axios');
-const { app } = require('electron'); //eslint-disable-line
+const { remote } = require('electron'); //eslint-disable-line
 const { DA_ZONG_URL, LOGIN_URL, MEALS_URL } = require('./config');
 
 const autoLogin = async (page, phone = '13141234125', vertifyCode) => {
@@ -205,33 +205,19 @@ const findUserInfo = cookie => {
 
 const getCookie = async () => {
   try {
-    const phone = process.argv[2];
-    const vertifyCode = process.argv[3];
-    let cookieObj = JSON.parse(fs.readFileSync(`${__dirname}/cookie.json`));
-    const { uamo, dper, loginTime } = findUserInfo(cookieObj);
-
-    const isExpired = Date.now() - loginTime > 3600 * 20 * 1000; // ms
-
-    if (isExpired || phone !== uamo) {
-      const browser = await puppeteer.launch();
-      const page = await browser.newPage();
-      await autoLogin(page, phone, vertifyCode);
-      cookieObj = await page.cookies(DA_ZONG_URL);
-      cookieObj.push({ name: 'loginTime', value: Date.now() });
-      saveCookie(cookieObj);
-    }
+    const userDir = remote.app.getPath('userData');
+    const cookieObj = JSON.parse(fs.readFileSync(`${userDir}/cookie.json`));
+    const { dper } = findUserInfo(cookieObj);
     const cookie = `dper=${dper}`;
     return cookie;
   } catch (e) {
-    throw new Error('登录失败');
+    throw new Error('获取cookie失败');
   }
 };
 
 const enroll = async () => {
   try {
     console.log('Start get cookie...');
-    console.log('patn', app.getPath('userData'));
-
     const cookie = await getCookie();
     console.log('Get cookie success!\n');
 
@@ -250,6 +236,7 @@ const enroll = async () => {
     console.log('Enroll finish!');
   } catch (e) {
     console.log('e', e.message);
+    throw e;
   }
 };
 

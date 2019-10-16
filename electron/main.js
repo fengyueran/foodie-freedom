@@ -5,6 +5,7 @@ const path = require('path');
 
 const { app, BrowserWindow, ipcMain } = electron;
 const handleLogin = require('./auto-enroll/login');
+const enroll = require('./auto-enroll/enroll');
 
 // Keep a global reference of the window object, if you don't, the window will
 // be closed automatically when the JavaScript object is garbage collected.
@@ -71,5 +72,15 @@ ipcMain.on('LOGIN', async (event, phoneNum, password) => {
     console.log('Login Error:', e);
     const isLoginSuccess = false;
     event.sender.send('LOGIN_FINISH', isLoginSuccess);
+  }
+});
+
+ipcMain.on('ENROLL', async event => {
+  try {
+    await enroll();
+    event.sender.send('ENROLL_FINISH', 'ENROLL_SUCCESS');
+  } catch (e) {
+    console.log('ENROLL Error:', e);
+    event.sender.send('ENROLL_FINISH', e.message);
   }
 });

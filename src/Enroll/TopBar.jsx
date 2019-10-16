@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { Button, utils } from '@xinghunm/widgets';
 
@@ -57,9 +57,16 @@ const StyledButton = styled(Button)`
 const TitleBar = () => {
   const handleClick = () => {
     if (window.Electron) {
-      window.Electron.enroll();
+      window.Electron.handleEnroll();
     }
   };
+  useEffect(() => {
+    if (window.Electron) {
+      window.Electron.onEnroll((event, status) => {
+        console.log('status', status);
+      });
+    }
+  }, []);
   return (
     <Column>
       <Row>
