@@ -2,7 +2,7 @@ const fs = require('fs');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const axios = require('axios');
-const { remote } = require('electron'); //eslint-disable-line
+const { app } = require('electron');
 const { DA_ZONG_URL, LOGIN_URL, MEALS_URL } = require('./config');
 
 const autoLogin = async (page, phone = '13141234125', vertifyCode) => {
@@ -186,7 +186,7 @@ const submit = async (offlineActivityId, cookie) => {
     return data;
   } catch (e) {
     console.error(e.message);
-    return { code: 0 };
+    return { code: 0, msg: e.message };
   }
 };
 
@@ -205,17 +205,21 @@ const findUserInfo = cookie => {
 
 const getCookie = async () => {
   try {
-    const userDir = remote.app.getPath('userData');
-    const cookieObj = JSON.parse(fs.readFileSync(`${userDir}/cookie.json`));
+    const userDir = app.getPath('userData');
+    console.log('userDir', userDir);
+    const cookieObj = JSON.parse(
+      fs.readFileSync(`${userDir}/DA_ZONG_COOKIE.json`)
+    );
     const { dper } = findUserInfo(cookieObj);
     const cookie = `dper=${dper}`;
     return cookie;
   } catch (e) {
+    console.log('获取cookie失败', e.message);
     throw new Error('获取cookie失败');
   }
 };
 
-const enroll = async () => {
+const enroll = async cb => {
   try {
     console.log('Start get cookie...');
     const cookie = await getCookie();
@@ -229,8 +233,18 @@ const enroll = async () => {
     for (let i = 0; i < mealList.length; i++) {
       const { offlineActivityId, activityTitle } = mealList[i];
       const res = await submit(offlineActivityId, cookie); // eslint-disable-line
-      if (res.code === 200) {
+      const {
+        code,
+        msg: { html }
+      } = res;
+      console.log(res);
+      if (code === 200) {
         console.log('报名成功:', activityTitle);
+        cb({ code, title: activityTitle });
+      } else if (html === '请先登录') {
+        throw new Error('请先登录');
+      } else if (code === 500 && !html.includes('已经报过名了')) {
+        cb({ code, title: activityTitle, msg: html });
       }
     }
     console.log('Enroll finish!');

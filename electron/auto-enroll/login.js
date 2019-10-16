@@ -1,6 +1,6 @@
 const fs = require('fs');
 const puppeteer = require('puppeteer');
-const { ipcRenderer } = require('electron'); //eslint-disable-line
+const { app, ipcRenderer } = require('electron'); //eslint-disable-line
 const { LOGIN_URL, DA_ZONG_URL } = require('./config');
 
 async function login(page, phoneNum, password, isPasswordLogin = false) {
@@ -16,11 +16,12 @@ async function login(page, phoneNum, password, isPasswordLogin = false) {
       await loginIframe.click('#tab-account'); // 手机密码登录
       await loginIframe.type('#account-textbox', phoneNum); // 手机号
       await loginIframe.type('#password-textbox', password); // 验证码
-      // await page.screenshot({ path: `${__dirname}/snapshot/login11.png` });
+      // await page.screenshot({ path: `${__dirname}/snapshot/login.png` });
     } else {
       await loginIframe.type('#mobile-number-textbox', phoneNum); // 手机号
       await loginIframe.type('#number-textbox', password); // 验证码
       await loginIframe.click('#login-button-mobile'); // 点击登录
+      // await page.screenshot({ path: `${__dirname}/snapshot/login.png` });
     }
 
     await page.waitForNavigation();
@@ -31,10 +32,11 @@ async function login(page, phoneNum, password, isPasswordLogin = false) {
   }
 }
 
-const saveCookie = cookie =>
-  new Promise((resolve, rejecct) => {
+const saveCookie = cookie => {
+  const userDir = app.getPath('userData');
+  return new Promise((resolve, rejecct) => {
     fs.writeFile(
-      `${__dirname}/cookie.json`,
+      `${userDir}/DA_ZONG_COOKIE.json`,
       JSON.stringify(cookie, null, '  '),
       err => {
         if (err) {
@@ -46,8 +48,9 @@ const saveCookie = cookie =>
       }
     );
   });
+};
 
-async function handleLogin(phoneNum, password, isPasswordLogin = true) {
+async function handleLogin(phoneNum, password, isPasswordLogin) {
   try {
     const browser = await puppeteer.launch();
     const page = await browser.newPage();

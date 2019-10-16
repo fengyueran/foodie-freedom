@@ -77,10 +77,11 @@ ipcMain.on('LOGIN', async (event, phoneNum, password) => {
 
 ipcMain.on('ENROLL', async event => {
   try {
-    await enroll();
-    event.sender.send('ENROLL_FINISH', 'ENROLL_SUCCESS');
+    const handleEnrollSuccess = data => {
+      event.sender.send('ENROLL_FINISH', data);
+    };
+    await enroll(handleEnrollSuccess);
   } catch (e) {
-    console.log('ENROLL Error:', e);
-    event.sender.send('ENROLL_FINISH', e.message);
+    event.sender.send('ENROLL_FINISH', { code: 500, msg: e.message });
   }
 });

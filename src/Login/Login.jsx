@@ -146,7 +146,7 @@ const Login = ({ onLoginSuccess }) => {
       window.Electron.onLogin((event, isLoginSuccess) => {
         setIsLogining(false);
         if (isLoginSuccess) {
-          console.log('data', isLoginSuccess);
+          localStorage.setItem('loginTime', Date.now());
           onLoginSuccess();
         } else {
           setIsLoginError(true);

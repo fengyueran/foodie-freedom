@@ -60,13 +60,7 @@ const TitleBar = () => {
       window.Electron.handleEnroll();
     }
   };
-  useEffect(() => {
-    if (window.Electron) {
-      window.Electron.onEnroll((event, status) => {
-        console.log('status', status);
-      });
-    }
-  }, []);
+
   return (
     <Column>
       <Row>

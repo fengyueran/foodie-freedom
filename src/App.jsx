@@ -17,7 +17,7 @@ const App = () => {
   };
   return (
     <Root>
-      {!isSuccess ? <EnrollPage /> : <Login onLoginSuccess={onLoginSuccess} />}
+      {isSuccess ? <EnrollPage /> : <Login onLoginSuccess={onLoginSuccess} />}
     </Root>
   );
 };

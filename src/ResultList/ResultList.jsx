@@ -66,11 +66,11 @@ const columns = [
   },
   {
     name: '店名',
-    dataIndex: 'name'
+    dataIndex: 'title'
   },
   {
     name: '状态',
-    dataIndex: 'status'
+    dataIndex: 'msg'
   }
 ];
 
@@ -93,7 +93,7 @@ const ResultList = ({ data }) => {
           dataSource={data}
           tableClass="overflow-x: hidden;"
           pagination={{
-            pageSize: 10
+            pageSize: 100000
           }}
         />
       </TableContainer>
