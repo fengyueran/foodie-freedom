@@ -5,7 +5,6 @@ import { Modal } from 'antd';
 import TopBar from './TopBar';
 import Particle from '../Particle';
 import ResultList from '../ResultList';
-import Loading from '../Loading';
 
 const Column = styled.div`
   display: flex;
@@ -17,11 +16,16 @@ const Column = styled.div`
 
 const EnrollPage = ({ handleEnrollFail }) => {
   const [data, setData] = useState([]);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isEnrolling, setIsEnrolling] = useState(false);
+  const [progress, setProgress] = useState(0);
+  const [stats, setStats] = useState(null);
   const dataRef = useRef([]);
+  const mealCountRef = useRef(0);
+  const successCountRef = useRef(0);
+  const failedCountRef = useRef(0);
 
   const handleEnrollStart = () => {
-    setIsLoading(true);
+    setIsEnrolling(true);
   };
 
   const updateData = useCallback(res => {
@@ -38,8 +42,24 @@ const EnrollPage = ({ handleEnrollFail }) => {
             onOk: handleEnrollFail
           });
         } else if (code === 520) {
-          setIsLoading(false);
+          setIsEnrolling(false);
+          setStats({
+            success: successCountRef.current,
+            failed: failedCountRef.current
+          });
+        } else if (code === 100) {
+          mealCountRef.current = res.count;
+        } else if (code === 120) {
+          const ProgressValue = Math.floor(
+            (res.finishCount * 100) / mealCountRef.current
+          );
+          setProgress(ProgressValue);
         } else {
+          if (code === 200) {
+            successCountRef.current++;
+          } else {
+            failedCountRef.current++;
+          }
           updateData(res);
         }
       });
@@ -50,8 +70,12 @@ const EnrollPage = ({ handleEnrollFail }) => {
     <Column>
       <TopBar handleEnrollStart={handleEnrollStart} />
       {/* <Particle /> */}
-      <ResultList data={data} />
-      {isLoading && <Loading tip="报名中..." />}
+      <ResultList
+        data={data}
+        isEnrolling={isEnrolling}
+        stats={stats}
+        progress={progress}
+      />
     </Column>
   );
 };

@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { Icon } from 'antd';
+import { Icon, Progress } from 'antd';
 import styled from 'styled-components';
 import { LineBox, VerticalBox } from '@xinghunm/widgets';
 import Table from './Table';
@@ -59,6 +59,21 @@ const TableContainer = styled.div`
   width: 100%;
   height: 100%;
 `;
+const ProgressWrapper = styled.div`
+  width: calc(100% - 200px);
+  margin-left: 100px;
+`;
+
+const Stats = styled.div`
+  margin-left: 100px;
+  span {
+    margin: 0 8px;
+  }
+`;
+
+const Tag = styled.span`
+  color: ${props => props.color};
+`;
 
 const columns = [
   {
@@ -86,16 +101,37 @@ const columns = [
 ];
 
 const propTypes = {
+  isEnrolling: PropTypes.bool.isRequired,
+  progress: PropTypes.number.isRequired,
+  stats: PropTypes.instanceOf(Object),
   data: PropTypes.array.isRequired
 };
 
-const ResultList = ({ data }) => {
+const ResultList = ({ isEnrolling, progress, stats, data }) => {
   return (
     <Container>
       <Header>
         <HeaderTitle>
           <strong>报名结果</strong>
         </HeaderTitle>
+        {isEnrolling && (
+          <ProgressWrapper>
+            <Progress percent={progress} />
+          </ProgressWrapper>
+        )}
+        {stats && (
+          <Stats>
+            <span>
+              共: <Tag>{`${stats.success + stats.failed}`}</Tag>
+            </span>
+            <span>
+              成功: <Tag>{`${stats.success}`}</Tag>
+            </span>
+            <span>
+              失败: <Tag>{`${stats.failed}`}</Tag>
+            </span>
+          </Stats>
+        )}
         <SeparateBar />
       </Header>
       <TableContainer>

@@ -228,8 +228,10 @@ const enroll = async cb => {
     console.log('Start get meal list...');
     const mealList = await fetchMealList();
     console.log('Get meal list success!\n');
+    cb({ code: 100, count: mealList.length });
 
     console.log('Start enroll...');
+    let finishCount = 0;
     for (let i = 0; i < mealList.length; i++) {
       const { offlineActivityId, activityTitle } = mealList[i];
       const res = await submit(offlineActivityId, cookie); // eslint-disable-line
@@ -238,6 +240,7 @@ const enroll = async cb => {
         msg: { html }
       } = res;
       console.log(res);
+      cb({ code: 120, finishCount: ++finishCount });
       if (code === 200) {
         console.log('报名成功:', activityTitle);
         cb({ code, title: activityTitle, msg: html });

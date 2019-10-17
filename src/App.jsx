@@ -3,6 +3,7 @@ import styled from 'styled-components';
 import EnrollPage from './Enroll';
 import Login from './Login';
 import 'antd/es/modal/style/css';
+import 'antd/es/progress/style/css';
 
 const Root = styled.div`
   display: flex;
