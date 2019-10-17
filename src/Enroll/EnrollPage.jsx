@@ -5,6 +5,7 @@ import { Modal } from 'antd';
 import TopBar from './TopBar';
 import Particle from '../Particle';
 import ResultList from '../ResultList';
+import Loading from '../Loading';
 
 const Column = styled.div`
   display: flex;
@@ -16,7 +17,12 @@ const Column = styled.div`
 
 const EnrollPage = ({ handleEnrollFail }) => {
   const [data, setData] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
   const dataRef = useRef([]);
+
+  const handleEnrollStart = () => {
+    setIsLoading(true);
+  };
 
   const updateData = useCallback(res => {
     dataRef.current.unshift(res);
@@ -25,25 +31,27 @@ const EnrollPage = ({ handleEnrollFail }) => {
   useEffect(() => {
     if (window.Electron) {
       window.Electron.onEnroll((event, res) => {
-        const { code, msg } = res;
+        const { msg, code } = res;
         if (msg === '请先登录') {
-          console.log('res', res);
           Modal.error({
             title: '认证失效，请重新登录',
             onOk: handleEnrollFail
           });
+        } else if (code === 520) {
+          setIsLoading(false);
         } else {
           updateData(res);
         }
       });
     }
   }, [handleEnrollFail, updateData]);
-  console.log('data', data);
+
   return (
     <Column>
-      <TopBar />
+      <TopBar handleEnrollStart={handleEnrollStart} />
       {/* <Particle /> */}
       <ResultList data={data} />
+      {isLoading && <Loading tip="报名中..." />}
     </Column>
   );
 };

@@ -240,13 +240,14 @@ const enroll = async cb => {
       console.log(res);
       if (code === 200) {
         console.log('报名成功:', activityTitle);
-        cb({ code, title: activityTitle });
+        cb({ code, title: activityTitle, msg: html });
       } else if (html === '请先登录') {
         throw new Error('请先登录');
       } else if (code === 500 && !html.includes('已经报过名了')) {
         cb({ code, title: activityTitle, msg: html });
       }
     }
+    cb({ code: 520 });
     console.log('Enroll finish!');
   } catch (e) {
     console.log('e', e.message);

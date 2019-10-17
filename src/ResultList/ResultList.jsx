@@ -1,5 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { Icon } from 'antd';
 import styled from 'styled-components';
 import { LineBox, VerticalBox } from '@xinghunm/widgets';
 import Table from './Table';
@@ -70,6 +71,16 @@ const columns = [
   },
   {
     name: '状态',
+    dataIndex: 'code',
+    render: code =>
+      code === 200 ? (
+        <Icon type="check" style={{ color: 'green' }} />
+      ) : (
+        <Icon type="close" style={{ color: 'red' }} />
+      )
+  },
+  {
+    name: '说明',
     dataIndex: 'msg'
   }
 ];

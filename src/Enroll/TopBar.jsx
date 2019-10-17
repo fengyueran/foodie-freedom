@@ -1,4 +1,5 @@
-import React, { useEffect } from 'react';
+import React from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Button, utils } from '@xinghunm/widgets';
 
@@ -54,9 +55,10 @@ const StyledButton = styled(Button)`
   box-shadow: none;
 `;
 
-const TitleBar = () => {
+const TopBar = ({ handleEnrollStart }) => {
   const handleClick = () => {
     if (window.Electron) {
+      handleEnrollStart();
       window.Electron.handleEnroll();
     }
   };
@@ -72,4 +74,8 @@ const TitleBar = () => {
   );
 };
 
-export default TitleBar;
+TopBar.propTypes = {
+  handleEnrollStart: PropTypes.func.isRequired
+};
+
+export default TopBar;
