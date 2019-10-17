@@ -26,6 +26,7 @@ const Row = styled.div`
 
 const Title = styled.h1`
   font-size: 18px;
+  margin: 0;
   margin-left: 12px;
   color: #e8ecf9;
 `;
@@ -67,7 +68,7 @@ const TopBar = ({ handleEnrollStart }) => {
     <Column>
       <Row>
         <Img src={LogoIcon} />
-        <Title>Foodie-Freedom</Title>
+        <Title>Foodie-Freedom by xinghunm</Title>
         <StyledButton onClick={handleClick}>Fire</StyledButton>
       </Row>
     </Column>

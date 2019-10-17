@@ -68,6 +68,7 @@ const Stats = styled.div`
   margin-left: 100px;
   span {
     margin: 0 8px;
+    font-weight: bold;
   }
 `;
 
@@ -125,10 +126,10 @@ const ResultList = ({ isEnrolling, progress, stats, data }) => {
               共: <Tag>{`${stats.success + stats.failed}`}</Tag>
             </span>
             <span>
-              成功: <Tag>{`${stats.success}`}</Tag>
+              成功: <Tag color="green">{`${stats.success}`}</Tag>
             </span>
             <span>
-              失败: <Tag>{`${stats.failed}`}</Tag>
+              失败: <Tag color="red">{`${stats.failed}`}</Tag>
             </span>
           </Stats>
         )}
