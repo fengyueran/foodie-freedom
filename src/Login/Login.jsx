@@ -171,7 +171,7 @@ const Login = ({ onLoginSuccess }) => {
           </Sizer>
           <InputWrapper>
             <Input
-              placeholder="密码或验证码"
+              placeholder="验证码"
               ref={passwordElRef}
               defaultValue={oldPassword}
             />
