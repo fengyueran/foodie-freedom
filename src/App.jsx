@@ -11,7 +11,9 @@ const Root = styled.div`
   width: 100vw;
 `;
 const App = () => {
-  const [isSuccess, setIsSuccess] = useState(false);
+  const loginTime = localStorage.getItem('loginTime'); // ms
+  const isOverOneDay = Date.now() - loginTime > 23 * 3600 * 1000;
+  const [isSuccess, setIsSuccess] = useState(!isOverOneDay);
   const onLoginSuccess = () => {
     setIsSuccess(true);
   };
