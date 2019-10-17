@@ -1,5 +1,7 @@
 import React, { useEffect, useState, useCallback, useRef } from 'react';
+import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Modal } from 'antd';
 import TopBar from './TopBar';
 import Particle from '../Particle';
 import ResultList from '../ResultList';
@@ -12,7 +14,7 @@ const Column = styled.div`
   background: #f0f3f5;
 `;
 
-const EnrollPage = () => {
+const EnrollPage = ({ handleEnrollFail }) => {
   const [data, setData] = useState([]);
   const dataRef = useRef([]);
 
@@ -26,13 +28,16 @@ const EnrollPage = () => {
         const { code, msg } = res;
         if (msg === '请先登录') {
           console.log('res', res);
+          Modal.error({
+            title: '认证失效，请重新登录',
+            onOk: handleEnrollFail
+          });
         } else {
           updateData(res);
-          console.log('000000000000');
         }
       });
     }
-  }, [updateData]);
+  }, [handleEnrollFail, updateData]);
   console.log('data', data);
   return (
     <Column>
@@ -41,6 +46,10 @@ const EnrollPage = () => {
       <ResultList data={data} />
     </Column>
   );
+};
+
+EnrollPage.propTypes = {
+  handleEnrollFail: PropTypes.func.isRequired
 };
 
 export default EnrollPage;

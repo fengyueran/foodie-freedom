@@ -2,6 +2,7 @@ import React, { useState } from 'react';
 import styled from 'styled-components';
 import EnrollPage from './Enroll';
 import Login from './Login';
+import 'antd/es/modal/style/css';
 
 const Root = styled.div`
   display: flex;
@@ -17,9 +18,17 @@ const App = () => {
   const onLoginSuccess = () => {
     setIsSuccess(true);
   };
+  const handleEnrollFail = () => {
+    localStorage.setItem('loginTime', 0);
+    setIsSuccess(false);
+  };
   return (
     <Root>
-      {isSuccess ? <EnrollPage /> : <Login onLoginSuccess={onLoginSuccess} />}
+      {isSuccess ? (
+        <EnrollPage handleEnrollFail={handleEnrollFail} />
+      ) : (
+        <Login onLoginSuccess={onLoginSuccess} />
+      )}
     </Root>
   );
 };
