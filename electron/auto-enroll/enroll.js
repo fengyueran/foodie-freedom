@@ -148,8 +148,8 @@ const submit = async (offlineActivityId, cookie) => {
         method: 'post',
         data: {
           offlineActivityId,
-          // phoneNo: "131****4125",
           branchId,
+          comboId: 1,
           marryStatus: 0,
           usePassCard: 0,
           isShareSina: false,

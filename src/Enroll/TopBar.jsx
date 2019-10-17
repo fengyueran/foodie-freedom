@@ -38,10 +38,10 @@ const Img = styled.img`
 
 const StyledButton = styled(Button)`
   font-size: 14px;
-  color: #ffff;
+  color: ${props => (props.isEnrolling ? 'gray' : '#fff')};
   border: solid 1px;
   margin-left: 60px;
-  border-color: #c0d6e8;
+  border-color: ${props => (props.isEnrolling ? 'gray' : '#c0d6e8')};
   outline: none;
   padding: 6px 14px;
   border-radius: 3px;
@@ -51,14 +51,14 @@ const StyledButton = styled(Button)`
   :hover {
     background: ${props =>
       props.isDisable ? 'none' : utils.fade('#337ab7', 0.2)};
-    cursor: ${props => (props.isDisable ? 'not-allowed' : 'pointer')};
+    cursor: ${props => (props.isEnrolling ? 'not-allowed' : 'pointer')};
   }
   box-shadow: none;
 `;
 
-const TopBar = ({ handleEnrollStart }) => {
+const TopBar = ({ isEnrolling, handleEnrollStart }) => {
   const handleClick = () => {
-    if (window.Electron) {
+    if (window.Electron && !isEnrolling) {
       handleEnrollStart();
       window.Electron.handleEnroll();
     }
@@ -69,13 +69,20 @@ const TopBar = ({ handleEnrollStart }) => {
       <Row>
         <Img src={LogoIcon} />
         <Title>Foodie-Freedom by xinghunm</Title>
-        <StyledButton onClick={handleClick}>Fire</StyledButton>
+        <StyledButton
+          onClick={handleClick}
+          isEnrolling={isEnrolling}
+          hasRipple={!isEnrolling}
+        >
+          Fire
+        </StyledButton>
       </Row>
     </Column>
   );
 };
 
 TopBar.propTypes = {
+  isEnrolling: PropTypes.bool.isRequired,
   handleEnrollStart: PropTypes.func.isRequired
 };
 

@@ -25,11 +25,20 @@ const EnrollPage = ({ handleEnrollFail }) => {
   const failedCountRef = useRef(0);
 
   const handleEnrollStart = () => {
+    dataRef.current = [];
     setIsEnrolling(true);
+    setStats(null);
+    setProgress(0);
+    successCountRef.current = 0;
+    failedCountRef.current = 0;
   };
 
   const updateData = useCallback(res => {
-    dataRef.current.unshift(res);
+    if (res === 200) {
+      dataRef.current.unshift(res);
+    } else {
+      dataRef.current.push(res);
+    }
     setData([...dataRef.current]);
   }, []);
   useEffect(() => {
@@ -68,14 +77,17 @@ const EnrollPage = ({ handleEnrollFail }) => {
 
   return (
     <Column>
-      <TopBar handleEnrollStart={handleEnrollStart} />
-      {/* <Particle /> */}
-      <ResultList
-        data={data}
-        isEnrolling={isEnrolling}
-        stats={stats}
-        progress={progress}
-      />
+      <TopBar handleEnrollStart={handleEnrollStart} isEnrolling={isEnrolling} />
+      {isEnrolling ? (
+        <ResultList
+          data={data}
+          isEnrolling={isEnrolling}
+          stats={stats}
+          progress={progress}
+        />
+      ) : (
+        <Particle />
+      )}
     </Column>
   );
 };
