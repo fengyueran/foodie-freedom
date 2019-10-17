@@ -1,6 +1,6 @@
 const fs = require('fs');
 const puppeteer = require('puppeteer');
-const { app, ipcRenderer } = require('electron'); //eslint-disable-line
+const { app } = require('electron');
 const { LOGIN_URL, DA_ZONG_URL } = require('./config');
 
 async function login(page, phoneNum, password, isPasswordLogin = false) {
@@ -56,7 +56,6 @@ async function handleLogin(phoneNum, password, isPasswordLogin) {
     const page = await browser.newPage();
     await login(page, phoneNum, password, isPasswordLogin);
     const cookieObj = await page.cookies(DA_ZONG_URL);
-    cookieObj.push({ name: 'loginTime', value: Date.now() });
     await saveCookie(cookieObj);
   } catch (e) {
     throw new Error('登录失败');
