@@ -5,7 +5,6 @@ import PARTICLE from './particle';
 const Canvas = styled.canvas`
   width: 100%;
   height: 100%;
-  background: lightGray;
   display: block;
 `;
 
@@ -31,6 +30,7 @@ class App extends Component {
     super();
     this.tick = 0;
     this.actionsIndex = 0;
+    this.playTimes = 0;
     this.geometrys = [];
   }
 
@@ -176,7 +176,10 @@ class App extends Component {
       window.cancelAnimationFrame(this.raf);
       this.actionsIndex = 0;
       this.geometrys = [];
-      this.start();
+      if (this.playTimes < 2) {
+        ++this.playTimes;
+        this.start();
+      }
     }
   };
 
