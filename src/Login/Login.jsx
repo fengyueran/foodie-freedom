@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Input } from 'antd';
+import { Input, Modal } from 'antd';
 import { Button, utils } from '@xinghunm/widgets';
 import LoginBG from './LoginBG';
 import Loading from '../Loading';
@@ -29,6 +29,7 @@ const Container = styled.div`
   position: absolute;
   transform: translate(-50%, -50%);
   padding: 45px;
+  box-sizing: content-box;
 `;
 
 const Sizer = styled.div`
@@ -134,8 +135,31 @@ const Login = ({ onLoginSuccess }) => {
         localStorage.setItem('phone', phoneNum);
         localStorage.setItem('password', password);
         setIsLogining(true);
+        const isVip = phoneNum === '13141234125' || phoneNum === '13141230814';
         if (window.Electron) {
-          window.Electron.handleLogin(phoneNum, password);
+          if (isVip) {
+            window.Electron.handleLogin(phoneNum, password);
+          } else {
+            fetch(`http://139.180.215.117:8000/dzdp/authority/${phoneNum}`)
+              .then(res => res.json())
+              .then(hasAuthority => {
+                if (hasAuthority) {
+                  window.Electron.handleLogin(phoneNum, password);
+                } else {
+                  setIsLogining(false);
+                  setIsLoginError(true);
+                  Modal.error({
+                    title: '权限认证失败，请联系管理员',
+                    content: 'Telephone: 13141234125'
+                  });
+                }
+              })
+              .catch(e => {
+                console.log('Login error', e);
+                setIsLogining(false);
+                setIsLoginError(true);
+              });
+          }
         }
       }
     }
