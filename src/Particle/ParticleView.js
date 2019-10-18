@@ -1,6 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PARTICLE from './particle';
+import imgSrc from './timg.jpeg';
 
 const Canvas = styled.canvas`
   width: 100%;
@@ -25,6 +26,158 @@ const Actions = [
     ]
   }
 ];
+
+class ImgFrag {
+  constructor(img, targetPosX, targetPosY, x, y, nx, ny) {
+    this.img = img; // 要绘制的图片点
+    this.x = x; // 当前图片点在canvas中的x坐标
+    this.y = y; // 当前图片点在canvas中的y坐标
+    this.targetPosX = targetPosX; // 图片点在目标位置x
+    this.targetPosY = targetPosY; // 图片点在目标位置y
+    this.vx = 0.2; // 图片点x方向速度
+    this.vy = 0.2; // 图片点在y方向的速度
+    this.nx = nx; // 图片下落的时候x方向的速度
+    this.ny = ny; // 图片下落时候y方向的速度
+  }
+}
+class ImgParicle {
+  constructor(targetPosX = 450, targetPosY = 50, canvas) {
+    this.canvas = canvas;
+    this.ctx = this.canvas.getContext('2d');
+    this.canvasW = this.canvas.clientWidth; // canvas 的宽
+    this.canvasH = this.canvas.clientHeight; // canvas 的高
+    this.imgW = 500; // 图片的宽
+    this.imgH = 503; // 图片的高
+    this.density = 1; // 每次取得像素密度
+    this.targetPosX = targetPosX; // 图片想要绘制在canvas中的位置X
+    this.targetPosY = targetPosY; // 图片想要绘制在canvas中的位置Y
+    this.fragList = []; // 存放每一个图片点的数组
+    this.counter = 1; // 用来限制那些图片点可以运动
+    this.isDown = false; // 图片是否已经落下
+    this.init();
+  }
+
+  // 初始化
+  init() {
+    const _this = this;
+    const img = new Image();
+
+    img.onload = () => {
+      _this.imgW = img.width;
+      _this.imgH = img.height;
+      const max = Math.max(_this.imgW, _this.imgH);
+      _this.density = Math.floor(max / 100);
+      console.log(_this.density);
+      _this.ctx.drawImage(img, 0, 0, _this.imgW, _this.imgH);
+
+      for (let i = 0; i < _this.imgW / _this.density; i++) {
+        _this.fragList[i] = [];
+        for (let j = 0; j < _this.imgH / _this.density; j++) {
+          const fragImg = _this.ctx.getImageData(
+            j * _this.density,
+            i * _this.density,
+            _this.density,
+            _this.density
+          ); // 图片片段
+          const targetPosX = j * _this.density + _this.targetPosX; // 目标x位置
+          const targetPosY = i * _this.density + _this.targetPosY; // 目标y位置
+          const x = Math.random() * _this.canvasW; // 随机到canvas中x位置
+          const y = Math.random() * _this.canvasH; // 随机到canvas中y位置
+          const nx = 0;
+          const ny = 0;
+          const frmg = new ImgFrag(
+            fragImg,
+            targetPosX,
+            targetPosY,
+            x,
+            y,
+            nx,
+            ny
+          );
+          _this.fragList[i][j] = frmg;
+        }
+      }
+      _this.ctx.clearRect(0, 0, _this.canvasW, _this.canvasH);
+
+      _this.draw();
+    };
+    img.src = imgSrc;
+  }
+
+  // 绘制图片
+  draw() {
+    const _this = this;
+    _this.ctx.clearRect(0, 0, _this.canvasW, _this.canvasH);
+    if (_this.counter < _this.imgH) _this.counter++;
+    if (!_this.isDown) {
+      for (let i = 0; i < this.imgW / _this.density; i += 2) {
+        for (let j = 0; j < this.imgH / _this.density; j += 2) {
+          const frag = this.fragList[i][j];
+          if (i < _this.counter) {
+            const tx = frag.targetPosX;
+            const ty = frag.targetPosY;
+            const x = frag.x;
+            const y = frag.y;
+            const dx = tx - x;
+            const dy = ty - y;
+            if (Math.abs(dx) < 0.5) {
+              frag.x = tx;
+            } else {
+              frag.x += dx * frag.vx * Math.random() * 1.5;
+            }
+            if (Math.abs(dy) < 0.5) {
+              frag.y = ty;
+            } else {
+              frag.y += dy * frag.vy * Math.random() * 1.5;
+            }
+          }
+
+          this.ctx.putImageData(frag.img, frag.x, frag.y);
+        }
+      }
+    } else {
+      for (let i = 0; i < _this.imgW / _this.density; i += 10) {
+        for (let j = 0; j < _this.imgH / _this.density; j += 10) {
+          const frag = _this.fragList[i][j];
+          const ty = _this.canvasH - 20;
+          frag.x += frag.nx;
+          frag.y += frag.ny;
+          if (frag.y >= ty) {
+            frag.y = ty;
+            frag.ny *= -Math.random() * 0.5;
+            if (Math.abs(frag.ny) <= 1) {
+              frag.ny = 0;
+            }
+            if (Math.abs(frag.ny) <= 1) frag.nx = 0;
+          } else {
+            frag.ny += 1;
+          }
+
+          _this.ctx.putImageData(frag.img, frag.x, frag.y);
+        }
+      }
+    }
+
+    requestAnimationFrame(_this.draw.bind(_this));
+  }
+
+  down() {
+    const _this = this;
+    this.isDown = !this.isDown;
+    if (this.isDown) {
+      for (let i = 0; i < _this.imgW / _this.density; i += 10) {
+        for (let j = 0; j < _this.imgH / _this.density; j += 10) {
+          const frag = _this.fragList[i][j];
+          frag.nx = (Math.random() - Math.random()) * 5;
+          frag.ny = -Math.random() * 10;
+        }
+      }
+    }
+
+    this.counter = 1;
+  }
+}
+
 class App extends Component {
   constructor() {
     super();
@@ -37,6 +190,10 @@ class App extends Component {
   componentDidMount() {
     this.start();
   }
+
+  handleClick = () => {
+    this.imgParicle.down();
+  };
 
   start = () => {
     const offscreenCanvas = this.createOffScreenCanvas();
@@ -179,6 +336,8 @@ class App extends Component {
       if (this.playTimes < 2) {
         ++this.playTimes;
         this.start();
+      } else {
+        this.imgParicle = new ImgParicle(0, 0, this.canvas);
       }
     }
   };
@@ -201,7 +360,7 @@ class App extends Component {
   };
 
   render() {
-    return <Canvas ref={this.initCanvas} />;
+    return <Canvas ref={this.initCanvas} onClick={this.handleClick} />;
   }
 }
 
