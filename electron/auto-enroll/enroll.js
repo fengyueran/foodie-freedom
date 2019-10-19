@@ -243,7 +243,7 @@ const enroll = async cb => {
       cb({ code: 120, finishCount: ++finishCount });
       if (code === 200) {
         console.log('报名成功:', activityTitle);
-        cb({ code, title: activityTitle, msg: html });
+        cb({ code, title: activityTitle, msg: '报名成功' });
       } else if (html === '请先登录') {
         throw new Error('请先登录');
       } else if (code === 500 && !html.includes('已经报过名了')) {

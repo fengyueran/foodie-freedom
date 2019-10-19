@@ -29,6 +29,7 @@ const EnrollPage = ({ handleEnrollFail }) => {
     setIsEnrolling(true);
     setStats(null);
     setProgress(0);
+    setData([]);
     successCountRef.current = 0;
     failedCountRef.current = 0;
   };
