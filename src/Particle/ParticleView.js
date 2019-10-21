@@ -1,7 +1,7 @@
 import React, { Component } from 'react';
 import styled from 'styled-components';
 import PARTICLE from './particle';
-import imgSrc from './test.png';
+import imgSrc from './cc.jpg';
 
 const Canvas = styled.canvas`
   width: 100%;
@@ -344,7 +344,8 @@ class App extends Component {
       this.actionsIndex = 0;
       this.geometrys = [];
       // this.start();
-      this.imgParicle = new ImgParicle(0, 0, this.canvas);
+      const imgX = this.canvas.clientWidth * 0.5 - 250;
+      this.imgParicle = new ImgParicle(imgX, 0, this.canvas);
     }
   };
 
