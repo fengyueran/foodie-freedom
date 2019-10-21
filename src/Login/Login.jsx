@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
 import { Input, Modal } from 'antd';
@@ -178,6 +178,20 @@ const Login = ({ onLoginSuccess }) => {
       });
     }
   }, [onLoginSuccess]);
+
+  const onKeyUp = useCallback(e => {
+    if (e.code === 'Enter') {
+      submit();
+    }
+  }, []);
+
+  useEffect(() => {
+    document.addEventListener('keyup', onKeyUp);
+    return () => {
+      document.removeEventListener('keyup', onKeyUp);
+    };
+  }, [onKeyUp]);
+
   return (
     <Mask>
       <LoginBG />
