@@ -10,6 +10,7 @@ const Container = styled(VerticalBox)`
   margin-left: auto;
   height: 100%;
   padding: 20px;
+  z-index: 10;
   @media (hover: none) {
     padding: 0;
   }
