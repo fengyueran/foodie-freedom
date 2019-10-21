@@ -78,12 +78,12 @@ const EnrollPage = ({ handleEnrollFail }) => {
 
   const isShowParticle = !localStorage.getItem('loginTime');
   const visibility = isEnrolling ? 'hidden' : 'visible';
-
+  const isShowResult = isEnrolling || data.length > 0;
   return (
     <Column>
       <TopBar handleEnrollStart={handleEnrollStart} isEnrolling={isEnrolling} />
       {isShowParticle && <Particle visibility={visibility} />}
-      {isEnrolling && (
+      {isShowResult && (
         <ResultList
           data={data}
           isEnrolling={isEnrolling}

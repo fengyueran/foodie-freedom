@@ -345,7 +345,7 @@ class App extends Component {
       this.geometrys = [];
       // this.start();
       const imgX = this.canvas.clientWidth * 0.5 - 250;
-      this.imgParicle = new ImgParicle(imgX, 0, this.canvas);
+      this.imgParicle = new ImgParicle(imgX, 20, this.canvas);
     }
   };
 
