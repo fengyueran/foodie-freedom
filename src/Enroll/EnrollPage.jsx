@@ -1,3 +1,4 @@
+/*eslint-disable*/
 import React, { useEffect, useState, useCallback, useRef } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
@@ -13,6 +14,33 @@ const Column = styled.div`
   height: 100%;
   background: #f0f3f5;
 `;
+const getPosition = addr =>
+  new Promise((resolve, reject) => {
+    const myGeo = new BMap.Geocoder();
+    myGeo.getPoint(
+      addr,
+      function(point) {
+        if (point) {
+          resolve(point);
+        } else {
+          reject();
+        }
+      },
+      '北京市'
+    );
+  });
+
+const getDistance = async () => {
+  // 创建地址解析器实例
+  const pt1 = await getPosition('北京市劲松五区');
+  const pt2 = await getPosition('北京市劲松七区708号楼');
+
+  var map = new BMap.Map('allmap');
+  var pointA = new BMap.Point(pt1.long, pt1.lat); // 创建点坐标A
+  var pointB = new BMap.Point(pt2.long, pt2.lat); // 创建点坐标B
+  var range = map.getDistance(pointA, pointB).toFixed(2); //获取两点距离,保留小数点后两位
+  console.log('门店距离当前' + range);
+};
 
 const EnrollPage = ({ handleEnrollFail }) => {
   const [data, setData] = useState([]);
