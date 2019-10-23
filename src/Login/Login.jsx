@@ -17,7 +17,7 @@ const Mask = styled.div`
 
 const Container = styled.div`
   width: 360px;
-  height: 196px;
+  height: 250px;
   box-shadow: 0 0 20px 0 rgba(0, 0, 0, 0.2), 0 5px 5px 0 rgba(0, 0, 0, 0.24);
   border-radius: 10px;
   background: #ffffff;
@@ -118,12 +118,15 @@ const Login = ({ onLoginSuccess }) => {
   const [isLogining, setIsLogining] = useState(false);
   const emailElRef = useRef();
   const passwordElRef = useRef();
+  const addrRef = useRef();
   const oldPhoneNum = localStorage.getItem('phone');
   const oldPassword = localStorage.getItem('password');
+  const oldAddr = localStorage.getItem('addr');
   const submit = () => {
     setIsLoginError(false);
     const phoneNum = emailElRef.current.input.value;
     const password = passwordElRef.current.input.value;
+    const addr = addrRef.current.input.value;
     if (phoneNum === '') {
       setIsMissEmail(true);
     } else {
@@ -214,12 +217,16 @@ const Login = ({ onLoginSuccess }) => {
               defaultValue={oldPassword}
             />
           </InputWrapper>
-          <Sizer size={30}>
-            {isMissPassword && <MissHint>请输入密码</MissHint>}
+          <Sizer size={20}>
+            {isMissPassword && <MissHint>请输入验证码</MissHint>}
           </Sizer>
+          <InputWrapper>
+            <Input placeholder="地址" ref={addrRef} defaultValue={oldAddr} />
+          </InputWrapper>
+          <Sizer size={30} />
           <BtnWrapper onClick={submit}>登录</BtnWrapper>
           <LoginErrorHint isLoginError={isLoginError}>
-            账号或密码错误。
+            账号或验证码错误。
           </LoginErrorHint>
         </Content>
         <Sun />
