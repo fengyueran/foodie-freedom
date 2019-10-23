@@ -30,16 +30,31 @@ const getPosition = addr =>
     );
   });
 
-const getDistance = async () => {
+const getDistance = async addr => {
   // 创建地址解析器实例
-  const pt1 = await getPosition('北京市劲松五区');
+  const pt1 = await getPosition(addr);
   const pt2 = await getPosition('北京市劲松七区708号楼');
 
   var map = new BMap.Map('allmap');
-  var pointA = new BMap.Point(pt1.long, pt1.lat); // 创建点坐标A
-  var pointB = new BMap.Point(pt2.long, pt2.lat); // 创建点坐标B
-  var range = map.getDistance(pointA, pointB).toFixed(2); //获取两点距离,保留小数点后两位
-  console.log('门店距离当前' + range);
+  var pointA = new BMap.Point(pt1.long, pt1.lat);
+  var pointB = new BMap.Point(pt2.long, pt2.lat);
+  var distance = map.getDistance(pointA, pointB).toFixed(2); //m
+  return distance;
+};
+
+const getNearestBranch = branches => {
+  let nearestBranch = branches[0].id;
+  let minDistance = getDistance(branches[0].title);
+
+  for (let i = 1; i < branches.length; i += 1) {
+    const { id, title } = branches[i];
+    let distance = getDistance(title);
+    if (distance < minDistance) {
+      minDistance = distance;
+      nearestBranch = id;
+    }
+  }
+  window.Electron.handleDistanceReceived(nearestBranch);
 };
 
 const EnrollPage = ({ handleEnrollFail }) => {
@@ -92,7 +107,9 @@ const EnrollPage = ({ handleEnrollFail }) => {
             (res.finishCount * 100) / mealCountRef.current
           );
           setProgress(ProgressValue);
-        } else {
+        } else if (code === 130) {
+          getNearestBranch(res.branches);
+        } else if (code !== 503) {
           if (code === 200) {
             successCountRef.current++;
           } else {

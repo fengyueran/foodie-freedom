@@ -2,7 +2,7 @@ const fs = require('fs');
 const cheerio = require('cheerio');
 const puppeteer = require('puppeteer');
 const axios = require('axios');
-const { app } = require('electron');
+const { app, ipcMain } = require('electron');
 const { DA_ZONG_URL, LOGIN_URL, MEALS_URL } = require('./config');
 
 const autoLogin = async (page, phone = '13141234125', vertifyCode) => {
@@ -126,13 +126,18 @@ const getBranches = async offlineActivityId => {
     const links = [];
     $('.activity-list a').each((index, element) => {
       const el = $(element);
-      links.push(el.attr('href'));
+      const link = el.attr('href');
+      const title = el.attr('title');
+      links.push({ link, title });
     });
 
-    const validLinks = links.filter(link => link.includes('shop'));
-    const branches = validLinks.map(link =>
-      link.replace(/.*\/shop\/(.*)/, `$1`)
+    const validLinks = links.filter(
+      ({ link }) => link && link.includes('shop')
     );
+    const branches = validLinks.map(({ link, title }) => {
+      const id = link.replace(/.*\/shop\/(.*)/, `$1`);
+      return { id, title };
+    });
     return branches;
   } catch (e) {
     console.log('Get branches error', e);
@@ -140,7 +145,22 @@ const getBranches = async offlineActivityId => {
   }
 };
 
-const submit = async (offlineActivityId, cookie) => {
+const getNearestBranch = (branches, cb) =>
+  new Promise(resolve => {
+    cb({ code: 130, branches });
+    const handleDistanceReceived = (event, branchId) => {
+      ipcMain.removeListener('DISTANCE_RECEIVED', handleDistanceReceived);
+      if (branchId) {
+        resolve(branchId);
+      } else {
+        resolve(branches[0].id);
+      }
+    };
+
+    ipcMain.on('DISTANCE_RECEIVED', handleDistanceReceived);
+  });
+
+const submit = async (offlineActivityId, cookie, cb) => {
   try {
     const enroll = branchId =>
       axios({
@@ -179,7 +199,8 @@ const submit = async (offlineActivityId, cookie) => {
     if (html === '请选择分店') {
       const branches = await getBranches(offlineActivityId);
       if (branches) {
-        const res = await enroll(branches[0]);
+        const branchId = await getNearestBranch(branches, cb);
+        const res = await enroll(branchId);
         return res.data;
       }
     }
@@ -234,12 +255,12 @@ const enroll = async cb => {
     let finishCount = 0;
     for (let i = 0; i < mealList.length; i++) {
       const { offlineActivityId, activityTitle } = mealList[i];
-      const res = await submit(offlineActivityId, cookie); // eslint-disable-line
+      const res = await submit(offlineActivityId, cookie, cb); // eslint-disable-line
       const {
         code,
         msg: { html }
       } = res;
-      console.log(res);
+      // console.log(res);
       cb({ code: 120, finishCount: ++finishCount });
       if (code === 200) {
         console.log('报名成功:', activityTitle);
@@ -257,5 +278,5 @@ const enroll = async cb => {
     throw e;
   }
 };
-
+getBranches(1174149273);
 module.exports = enroll;

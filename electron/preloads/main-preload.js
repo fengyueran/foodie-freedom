@@ -3,6 +3,7 @@ const onLogin = require('../utils/onLogin');
 const onEnroll = require('../utils/onEnroll');
 const handleEnroll = require('../utils/handleEnroll');
 const enroll = require('../auto-enroll/enroll');
+const handleDistanceReceived = require('../utils/handleDistanceReceived');
 
 Object.defineProperty(window, 'Electron', {
   configurable: false,
@@ -13,6 +14,7 @@ Object.defineProperty(window, 'Electron', {
     onLogin,
     enroll,
     onEnroll,
-    handleEnroll
+    handleEnroll,
+    handleDistanceReceived
   })
 });
