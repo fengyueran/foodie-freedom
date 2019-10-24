@@ -4,11 +4,7 @@ import styled from 'styled-components';
 import { Button, utils } from '@xinghunm/widgets';
 
 import LogoIcon from './logo.png';
-
-const Column = styled.div`
-  display: flex;
-  flex-direction: column;
-`;
+import AvatarIcon from './avatar.png';
 
 const Row = styled.div`
   line-height: 24px;
@@ -31,6 +27,26 @@ const Title = styled.h1`
   color: #e8ecf9;
 `;
 
+const Account = styled.div`
+  position: absolute;
+  right: 15px;
+  height: 50px;
+  top: 0;
+  display: flex;
+  align-items: center;
+  :hover {
+    cursor: pointer;
+  }
+`;
+
+const Avatar = styled.div`
+  width: 26px;
+  height: 26px;
+  border-radius: 13px;
+  overflow: hidden;
+  background: #fff;
+  margin-right: 5px;
+`;
 const Img = styled.img`
   width: 25px;
   height: 25px;
@@ -65,19 +81,23 @@ const TopBar = ({ isEnrolling, handleEnrollStart }) => {
   };
 
   return (
-    <Column>
-      <Row>
-        <Img src={LogoIcon} />
-        <Title>Foodie-Freedom by xinghunm</Title>
-        <StyledButton
-          onClick={handleClick}
-          isEnrolling={isEnrolling}
-          hasRipple={!isEnrolling}
-        >
-          Fire
-        </StyledButton>
-      </Row>
-    </Column>
+    <Row>
+      <Img src={LogoIcon} />
+      <Title>Foodie-Freedom by xinghunm</Title>
+      <StyledButton
+        onClick={handleClick}
+        isEnrolling={isEnrolling}
+        hasRipple={!isEnrolling}
+      >
+        Fire
+      </StyledButton>
+      <Account>
+        <Avatar>
+          <Img src={AvatarIcon} />
+        </Avatar>
+        {localStorage.getItem('phone')}
+      </Account>
+    </Row>
   );
 };
 
