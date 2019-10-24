@@ -61,7 +61,7 @@ const getNearestBranch = branches => {
   window.Electron.handleDistanceReceived(nearestBranch);
 };
 
-const EnrollPage = ({ handleEnrollFail }) => {
+const EnrollPage = ({ handleLogout }) => {
   const [data, setData] = useState([]);
   const [isEnrolling, setIsEnrolling] = useState(false);
   const [progress, setProgress] = useState(0);
@@ -96,7 +96,7 @@ const EnrollPage = ({ handleEnrollFail }) => {
         if (msg === '请先登录') {
           Modal.error({
             title: '认证失效，请重新登录',
-            onOk: handleEnrollFail
+            onOk: handleLogout
           });
         } else if (code === 520) {
           setIsEnrolling(false);
@@ -123,14 +123,18 @@ const EnrollPage = ({ handleEnrollFail }) => {
         }
       });
     }
-  }, [handleEnrollFail, updateData]);
+  }, [handleLogout, updateData]);
 
   const isShowParticle = !localStorage.getItem('loginTime');
   const visibility = isEnrolling ? 'hidden' : 'visible';
   const isShowResult = isEnrolling || data.length > 0;
   return (
     <Column>
-      <TopBar handleEnrollStart={handleEnrollStart} isEnrolling={isEnrolling} />
+      <TopBar
+        handleEnrollStart={handleEnrollStart}
+        handleLogout={handleLogout}
+        isEnrolling={isEnrolling}
+      />
       {isShowParticle && <Particle visibility={visibility} />}
       {isShowResult && (
         <ResultList
@@ -145,7 +149,7 @@ const EnrollPage = ({ handleEnrollFail }) => {
 };
 
 EnrollPage.propTypes = {
-  handleEnrollFail: PropTypes.func.isRequired
+  handleLogout: PropTypes.func.isRequired
 };
 
 export default EnrollPage;

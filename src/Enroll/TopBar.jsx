@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
+import { Menu, Dropdown } from 'antd';
 import { Button, utils } from '@xinghunm/widgets';
 
 import LogoIcon from './logo.png';
@@ -34,9 +35,6 @@ const Account = styled.div`
   top: 0;
   display: flex;
   align-items: center;
-  :hover {
-    cursor: pointer;
-  }
 `;
 
 const Avatar = styled.div`
@@ -46,7 +44,11 @@ const Avatar = styled.div`
   overflow: hidden;
   background: #fff;
   margin-right: 5px;
+  :hover {
+    cursor: pointer;
+  }
 `;
+
 const Img = styled.img`
   width: 25px;
   height: 25px;
@@ -72,13 +74,18 @@ const StyledButton = styled(Button)`
   box-shadow: none;
 `;
 
-const TopBar = ({ isEnrolling, handleEnrollStart }) => {
+const TopBar = ({ isEnrolling, handleEnrollStart, handleLogout }) => {
   const handleClick = () => {
     if (window.Electron && !isEnrolling) {
       handleEnrollStart();
       window.Electron.handleEnroll();
     }
   };
+  const menu = (
+    <Menu onClick={handleLogout}>
+      <Menu.Item>退出</Menu.Item>
+    </Menu>
+  );
 
   return (
     <Row>
@@ -92,9 +99,11 @@ const TopBar = ({ isEnrolling, handleEnrollStart }) => {
         Fire
       </StyledButton>
       <Account>
-        <Avatar>
-          <Img src={AvatarIcon} />
-        </Avatar>
+        <Dropdown overlay={menu} trigger="click">
+          <Avatar>
+            <Img src={AvatarIcon} />
+          </Avatar>
+        </Dropdown>
         {localStorage.getItem('phone')}
       </Account>
     </Row>
@@ -103,6 +112,7 @@ const TopBar = ({ isEnrolling, handleEnrollStart }) => {
 
 TopBar.propTypes = {
   isEnrolling: PropTypes.bool.isRequired,
+  handleLogout: PropTypes.func.isRequired,
   handleEnrollStart: PropTypes.func.isRequired
 };
 

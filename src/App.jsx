@@ -13,20 +13,18 @@ const Root = styled.div`
   width: 100vw;
 `;
 const App = () => {
-  const loginTime = localStorage.getItem('loginTime'); // ms
-  const isOverOneDay = Date.now() - loginTime > 23 * 3600 * 1000;
-  const [isSuccess, setIsSuccess] = useState(!isOverOneDay);
+  const [isSuccess, setIsSuccess] = useState(true);
   const onLoginSuccess = () => {
     setIsSuccess(true);
   };
-  const handleEnrollFail = () => {
-    localStorage.setItem('loginTime', 0);
+  const handleLogout = () => {
     setIsSuccess(false);
   };
+
   return (
     <Root>
       {isSuccess ? (
-        <EnrollPage handleEnrollFail={handleEnrollFail} />
+        <EnrollPage handleLogout={handleLogout} />
       ) : (
         <Login onLoginSuccess={onLoginSuccess} />
       )}
