@@ -12,7 +12,7 @@ const Column = styled.div`
 
 const Row = styled.div`
   line-height: 24px;
-  background: #12578e;
+  background: #1e7dca;
   box-shadow: 0 2px 8px 0 rgba(0, 0, 0, 0.15);
   display: flex;
   width: 100%;

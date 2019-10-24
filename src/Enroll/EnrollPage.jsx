@@ -12,7 +12,11 @@ const Column = styled.div`
   flex-direction: column;
   overflow: hidden;
   height: 100%;
-  background: #f0f3f5;
+  background: radial-gradient(
+    ellipse at center,
+    rgba(209, 228, 234, 1) 0%,
+    rgba(186, 228, 244, 1) 100%
+  );
 `;
 const getPosition = addr =>
   new Promise((resolve, reject) => {

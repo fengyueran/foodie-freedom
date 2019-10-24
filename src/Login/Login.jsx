@@ -1,7 +1,7 @@
 import React, { useState, useRef, useEffect, useCallback } from 'react';
 import PropTypes from 'prop-types';
 import styled from 'styled-components';
-import { Input, Modal } from 'antd';
+import { Input, Modal, Icon } from 'antd';
 import { Button, utils } from '@xinghunm/widgets';
 import LoginBG from './LoginBG';
 import Loading from '../Loading';
@@ -72,6 +72,7 @@ const Cloud = styled.div`
 `;
 
 const InputWrapper = styled.div`
+  position: relative;
   input::-webkit-input-placeholder {
     color: #9c9c9c !important;
   }
@@ -103,6 +104,17 @@ const BtnWrapper = styled(Button)`
 const MissHint = styled.span`
   font-size: 14px;
   color: #f5222d;
+`;
+
+const InfoIcon = styled.div`
+  position: absolute;
+  right: 0;
+  top: 0;
+  width: 50px;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding-left: 28px;
 `;
 
 const LoginErrorHint = styled.div`
@@ -221,6 +233,9 @@ const Login = ({ onLoginSuccess }) => {
           <Sizer size={12} />
           <InputWrapper>
             <Input placeholder="地址" ref={addrRef} defaultValue={oldAddr} />
+            <InfoIcon title="根据当前地址选择最近的分店">
+              <Icon type="info-circle" />
+            </InfoIcon>
           </InputWrapper>
           <Sizer size={25} />
           <BtnWrapper onClick={submit}>登录</BtnWrapper>
