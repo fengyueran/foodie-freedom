@@ -28,7 +28,7 @@ const Container = styled.div`
   border: none;
   position: absolute;
   transform: translate(-50%, -50%);
-  padding: 45px;
+  padding: 25px 45px 45px 45px;
   box-sizing: content-box;
 `;
 
@@ -112,11 +112,10 @@ const LoginErrorHint = styled.div`
 `;
 
 const Login = ({ onLoginSuccess }) => {
-  const [isMissEmail, setIsMissEmail] = useState(false);
-  const [isMissPassword, setIsMissPassword] = useState(false);
+  const [errorMsg, setErrorMsg] = useState();
   const [isLoginError, setIsLoginError] = useState(false);
   const [isLogining, setIsLogining] = useState(false);
-  const emailElRef = useRef();
+  const phoneElRef = useRef();
   const passwordElRef = useRef();
   const addrRef = useRef();
   const oldPhoneNum = localStorage.getItem('phone');
@@ -124,45 +123,48 @@ const Login = ({ onLoginSuccess }) => {
   const oldAddr = localStorage.getItem('addr');
   const submit = () => {
     setIsLoginError(false);
-    const phoneNum = emailElRef.current.input.value;
+    setErrorMsg();
+    const phoneNum = phoneElRef.current.input.value;
     const password = passwordElRef.current.input.value;
     const addr = addrRef.current.input.value;
     if (phoneNum === '') {
-      setIsMissEmail(true);
+      setErrorMsg('请输入手机号');
+      phoneElRef.current.input.focus();
+    } else if (password === '') {
+      setErrorMsg('请输入验证码');
+      passwordElRef.current.input.focus();
+    } else if (addr === '') {
+      setErrorMsg('请输入地址');
+      addrRef.current.input.focus();
     } else {
-      setIsMissEmail(false);
-      if (password === '') {
-        setIsMissPassword(true);
-      } else {
-        setIsMissPassword(false);
-        localStorage.setItem('phone', phoneNum);
-        localStorage.setItem('password', password);
-        setIsLogining(true);
-        const isVip = phoneNum === '13141234125' || phoneNum === '13141230814';
-        if (window.Electron) {
-          if (isVip) {
-            window.Electron.handleLogin(phoneNum, password);
-          } else {
-            fetch(`http://139.180.215.117:8000/dzdp/authority/${phoneNum}`)
-              .then(res => res.json())
-              .then(hasAuthority => {
-                if (hasAuthority) {
-                  window.Electron.handleLogin(phoneNum, password);
-                } else {
-                  setIsLogining(false);
-                  setIsLoginError(true);
-                  Modal.error({
-                    title: '权限认证失败，请联系管理员',
-                    content: 'Telephone: 13141234125'
-                  });
-                }
-              })
-              .catch(e => {
-                console.log('Login error', e);
+      localStorage.setItem('phone', phoneNum);
+      localStorage.setItem('password', password);
+      localStorage.setItem('addr', addr);
+      setIsLogining(true);
+      const isVip = phoneNum === '13141234125' || phoneNum === '13141230814';
+      if (window.Electron) {
+        if (isVip) {
+          window.Electron.handleLogin(phoneNum, password, addr);
+        } else {
+          fetch(`http://139.180.215.117:8000/dzdp/authority/${phoneNum}`)
+            .then(res => res.json())
+            .then(hasAuthority => {
+              if (hasAuthority) {
+                window.Electron.handleLogin(phoneNum, password, addr);
+              } else {
                 setIsLogining(false);
                 setIsLoginError(true);
-              });
-          }
+                Modal.error({
+                  title: '权限认证失败，请联系管理员',
+                  content: 'Telephone: 13141234125'
+                });
+              }
+            })
+            .catch(e => {
+              console.log('Login error', e);
+              setIsLogining(false);
+              setIsLoginError(true);
+            });
         }
       }
     }
@@ -200,16 +202,15 @@ const Login = ({ onLoginSuccess }) => {
       <LoginBG />
       <Container>
         <Content>
+          <Sizer size={20}>{errorMsg && <MissHint>{errorMsg}</MissHint>}</Sizer>
           <InputWrapper>
             <Input
               placeholder="手机号"
-              ref={emailElRef}
+              ref={phoneElRef}
               defaultValue={oldPhoneNum}
             />
           </InputWrapper>
-          <Sizer size={20}>
-            {isMissEmail && <MissHint>请输入邮箱</MissHint>}
-          </Sizer>
+          <Sizer size={12} />
           <InputWrapper>
             <Input
               placeholder="验证码"
@@ -217,16 +218,14 @@ const Login = ({ onLoginSuccess }) => {
               defaultValue={oldPassword}
             />
           </InputWrapper>
-          <Sizer size={20}>
-            {isMissPassword && <MissHint>请输入验证码</MissHint>}
-          </Sizer>
+          <Sizer size={12} />
           <InputWrapper>
             <Input placeholder="地址" ref={addrRef} defaultValue={oldAddr} />
           </InputWrapper>
-          <Sizer size={30} />
+          <Sizer size={25} />
           <BtnWrapper onClick={submit}>登录</BtnWrapper>
           <LoginErrorHint isLoginError={isLoginError}>
-            账号或验证码错误。
+            手机号或验证码错误。
           </LoginErrorHint>
         </Content>
         <Sun />
