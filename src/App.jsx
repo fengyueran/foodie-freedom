@@ -13,7 +13,7 @@ const Root = styled.div`
   width: 100vw;
 `;
 const App = () => {
-  const [isSuccess, setIsSuccess] = useState(true);
+  const [isSuccess, setIsSuccess] = useState(localStorage.loginTime);
   const onLoginSuccess = () => {
     setIsSuccess(true);
   };
