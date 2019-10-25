@@ -1,6 +1,7 @@
 const fs = require('fs');
-const puppeteer = require('puppeteer');
+const puppeteer = require('puppeteer-core');
 const { app } = require('electron');
+const log = require('electron-log');
 const { LOGIN_URL, DA_ZONG_URL } = require('./config');
 
 async function login(page, phoneNum, password, isPasswordLogin = false) {
@@ -50,14 +51,28 @@ const saveCookie = cookie => {
   });
 };
 
+function getChromiumExecPath() {
+  return puppeteer.executablePath().replace('app.asar', 'app.asar.unpacked');
+}
+
 async function handleLogin(phoneNum, password, isPasswordLogin) {
   try {
-    const browser = await puppeteer.launch();
+    const executablePath = getChromiumExecPath();
+    log.info('executablePath', executablePath);
+    const browser = await puppeteer.launch({
+      executablePath
+    });
+    log.info('000000000');
     const page = await browser.newPage();
+    log.info('11111111');
     await login(page, phoneNum, password, isPasswordLogin);
+    log.info('22222222');
     const cookieObj = await page.cookies(DA_ZONG_URL);
+    log.info('333333');
     await saveCookie(cookieObj);
+    log.info('44444444');
   } catch (e) {
+    log.error('login error', e.message);
     throw new Error('登录失败');
   }
 }

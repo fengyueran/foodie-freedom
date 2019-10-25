@@ -82,6 +82,7 @@ ipcMain.on('ENROLL', async event => {
     };
     await enroll(handleEnrollSuccess);
   } catch (e) {
+    console.log(e);
     event.sender.send('ENROLL_FINISH', { code: 503, msg: e.message });
   }
 });
