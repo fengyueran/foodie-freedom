@@ -1,4 +1,5 @@
 const fs = require('fs');
+const path = require('path');
 const puppeteer = require('puppeteer-core');
 const { app } = require('electron');
 const log = require('electron-log');
@@ -52,7 +53,34 @@ const saveCookie = cookie => {
 };
 
 function getChromiumExecPath() {
-  return puppeteer.executablePath().replace('app.asar', 'app.asar.unpacked');
+  let executablePath;
+  if (process.env.NODE_ENV === 'development') {
+    executablePath = path.join(
+      process.cwd(),
+      'chromium',
+      'mac-706915/Chromium.app/Contents/MacOS/Chromium'
+    );
+  } else {
+    const appPath = app.getAppPath();
+    const unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
+    log.info('process.platform', process.platform);
+    if (process.platform === 'darwin') {
+      executablePath = path.join(
+        unpackedPath,
+        'chromium',
+        'mac-706915/Chromium.app/Contents/MacOS/Chromium'
+      );
+    } else {
+      executablePath = path.join(
+        unpackedPath,
+        'chromium',
+        'win-706915/chrome.exe'
+      );
+    }
+  }
+
+  log.info('executablePath', executablePath);
+  return executablePath;
 }
 
 async function handleLogin(phoneNum, password, isPasswordLogin) {

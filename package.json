@@ -11,8 +11,7 @@
     "cheerio": "^1.0.0-rc.3",
     "electron-log": "^3.0.8",
     "prop-types": "^15.7.2",
-    "puppeteer": "^1.20.0",
-    "puppeteer-core": "^2.0.0",
+    "puppeteer-core": "2.0.0",
     "react": "^16.8.5",
     "react-dom": "^16.8.5",
     "styled-components": "^4.4.0"
@@ -25,8 +24,8 @@
     "coverage": "react-app-rewired test --coverage",
     "analyze": "source-map-explorer 'build/static/js/*.js'",
     "pre-pack": "rm -rf build dist && yarn build",
-    "packer-mac": "yarn pre-pack && electron-builder build -c.extraMetadata=build/electron/main.js --m",
-    "packer-win": "yarn pre-pack && electron-builder build -c.extraMetadata=build/electron/main.js --win"
+    "pack-mac": "yarn pre-pack && electron-builder build -c.extraMetadata=build/electron/main.js --m",
+    "pack-win": "yarn pre-pack && electron-builder build -c.extraMetadata=build/electron/main.js --win"
   },
   "build": {
     "productName": "Foodie",
@@ -36,9 +35,9 @@
     "nodeGypRebuild": "false",
     "npmRebuild": "false",
     "asar": true,
-    "asarUnpack": "node_modules/puppeteer/.local-chromium/**/*",
     "mac": {
       "category": "Utility",
+      "asarUnpack": "chromium/mac-706915",
       "target": [
         "dmg"
       ],
@@ -51,6 +50,7 @@
       ]
     },
     "win": {
+      "asarUnpack": "chromium/win-706915",
       "target": [
         "nsis"
       ],

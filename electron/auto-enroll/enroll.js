@@ -1,6 +1,5 @@
 const fs = require('fs');
 const cheerio = require('cheerio');
-const puppeteer = require('puppeteer');
 const axios = require('axios');
 const { app, ipcMain } = require('electron');
 const { DA_ZONG_URL, LOGIN_URL, MEALS_URL } = require('./config');
@@ -278,5 +277,5 @@ const enroll = async cb => {
     throw e;
   }
 };
-getBranches(1174149273);
+
 module.exports = enroll;
