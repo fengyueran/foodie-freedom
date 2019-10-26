@@ -36,7 +36,8 @@ const getPosition = addr =>
 
 const getDistance = async addr => {
   const pt1 = await getPosition(addr);
-  const pt2 = await getPosition('北京市劲松七区708号楼');
+  const home = localStorage.getItem('addr');
+  const pt2 = await getPosition(home);
 
   var map = new BMap.Map('allmap');
   var pointA = new BMap.Point(pt1.long, pt1.lat);
