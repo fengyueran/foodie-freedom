@@ -26,7 +26,7 @@ async function login(page, phoneNum, password, isPasswordLogin = false) {
       // await page.screenshot({ path: `${__dirname}/snapshot/login.png` });
     }
 
-    await page.waitForNavigation();
+    await page.waitForNavigation({ timeout: 10000 });
     console.log('Login Success!');
   } catch (e) {
     console.log('Login error:', e.message);
