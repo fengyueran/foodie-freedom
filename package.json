@@ -43,7 +43,7 @@
       "target": [
         "dmg"
       ],
-      "icon": "build/dvfcloud.icns"
+      "icon": "build/cc.icns"
     },
     "linux": {
       "category": "Utility",
@@ -59,7 +59,7 @@
       "target": [
         "nsis"
       ],
-      "icon": "build/dvfcloud.ico"
+      "icon": "build/cc.png"
     },
     "files": [
       {
