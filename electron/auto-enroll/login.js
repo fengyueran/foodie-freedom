@@ -62,7 +62,7 @@ function getChromiumExecPath() {
     );
   } else {
     const appPath = app.getAppPath();
-    const unpackedPath = appPath.replace('app.asar', 'app.asar.unpacked');
+    const unpackedPath = appPath.replace('app.asar', '/');
     log.info('process.platform', process.platform);
     if (process.platform === 'darwin') {
       executablePath = path.join(
@@ -79,7 +79,6 @@ function getChromiumExecPath() {
     }
   }
 
-  log.info('executablePath', executablePath);
   return executablePath;
 }
 
@@ -90,15 +89,10 @@ async function handleLogin(phoneNum, password, isPasswordLogin) {
     const browser = await puppeteer.launch({
       executablePath
     });
-    log.info('000000000');
     const page = await browser.newPage();
-    log.info('11111111');
     await login(page, phoneNum, password, isPasswordLogin);
-    log.info('22222222');
     const cookieObj = await page.cookies(DA_ZONG_URL);
-    log.info('333333');
     await saveCookie(cookieObj);
-    log.info('44444444');
   } catch (e) {
     log.error('login error', e.message);
     throw new Error('登录失败');

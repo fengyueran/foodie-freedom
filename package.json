@@ -34,10 +34,12 @@
     "buildDependenciesFromSource": false,
     "nodeGypRebuild": "false",
     "npmRebuild": "false",
-    "asar": true,
     "mac": {
       "category": "Utility",
-      "asarUnpack": "chromium/mac-706915",
+      "extraResources": {
+        "from": "./chromium/mac-706915",
+        "to": "./chromium/mac-706915"
+      },
       "target": [
         "dmg"
       ],
@@ -50,7 +52,10 @@
       ]
     },
     "win": {
-      "asarUnpack": "chromium/win-706915",
+      "extraResources": {
+        "from": "./chromium/win-706915",
+        "to": "./chromium/win-706915"
+      },
       "target": [
         "nsis"
       ],
