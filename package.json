@@ -63,7 +63,8 @@
         "filter": [
           "**/*",
           "!node_modules",
-          "!src"
+          "!src",
+          "!chromium"
         ]
       }
     ],
