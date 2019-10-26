@@ -196,6 +196,7 @@ class App extends Component {
 
   componentDidMount() {
     this.start();
+    localStorage.setItem('play', true);
     // this.imgParicle = new ImgParicle(0, 0, this.canvas);
   }
 

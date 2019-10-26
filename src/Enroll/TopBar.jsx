@@ -74,7 +74,12 @@ const StyledButton = styled(Button)`
   box-shadow: none;
 `;
 
-const TopBar = ({ isEnrolling, handleEnrollStart, handleLogout }) => {
+const TopBar = ({
+  isEnrolling,
+  handleEnrollStart,
+  handleLogout,
+  isShowParticle
+}) => {
   const handleClick = () => {
     if (window.Electron && !isEnrolling) {
       handleEnrollStart();
@@ -98,14 +103,16 @@ const TopBar = ({ isEnrolling, handleEnrollStart, handleLogout }) => {
       >
         Fire
       </StyledButton>
-      <Account>
-        <Dropdown overlay={menu} trigger="click">
-          <Avatar>
-            <Img src={AvatarIcon} />
-          </Avatar>
-        </Dropdown>
-        {localStorage.getItem('phone')}
-      </Account>
+      {!isShowParticle && (
+        <Account>
+          <Dropdown overlay={menu} trigger={['click']}>
+            <Avatar>
+              <Img src={AvatarIcon} />
+            </Avatar>
+          </Dropdown>
+          {localStorage.getItem('phone')}
+        </Account>
+      )}
     </Row>
   );
 };
@@ -113,6 +120,7 @@ const TopBar = ({ isEnrolling, handleEnrollStart, handleLogout }) => {
 TopBar.propTypes = {
   isEnrolling: PropTypes.bool.isRequired,
   handleLogout: PropTypes.func.isRequired,
+  isShowParticle: PropTypes.bool.isRequired,
   handleEnrollStart: PropTypes.func.isRequired
 };
 

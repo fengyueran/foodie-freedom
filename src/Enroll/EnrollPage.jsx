@@ -35,7 +35,6 @@ const getPosition = addr =>
   });
 
 const getDistance = async addr => {
-  // 创建地址解析器实例
   const pt1 = await getPosition(addr);
   const pt2 = await getPosition('北京市劲松七区708号楼');
 
@@ -82,7 +81,7 @@ const EnrollPage = ({ handleLogout }) => {
   };
 
   const updateData = useCallback(res => {
-    if (res === 200) {
+    if (res.code === 200) {
       dataRef.current.unshift(res);
     } else {
       dataRef.current.push(res);
@@ -125,7 +124,7 @@ const EnrollPage = ({ handleLogout }) => {
     }
   }, [handleLogout, updateData]);
 
-  const isShowParticle = !localStorage.getItem('loginTime');
+  const isShowParticle = !localStorage.getItem('play');
   const visibility = isEnrolling ? 'hidden' : 'visible';
   const isShowResult = isEnrolling || data.length > 0;
   return (
@@ -134,6 +133,7 @@ const EnrollPage = ({ handleLogout }) => {
         handleEnrollStart={handleEnrollStart}
         handleLogout={handleLogout}
         isEnrolling={isEnrolling}
+        isShowParticle={isShowParticle}
       />
       {isShowParticle && <Particle visibility={visibility} />}
       {isShowResult && (
