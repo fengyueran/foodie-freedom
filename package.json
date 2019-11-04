@@ -2,7 +2,7 @@
   "name": "Foodie-Freedom",
   "version": "0.0.1",
   "private": true,
-  "main": "./electron/main.js",
+  "main": "./app/electron/main.js",
   "homepage": "./",
   "dependencies": {
     "@xinghunm/widgets": "^0.0.27",
@@ -43,7 +43,7 @@
       "target": [
         "dmg"
       ],
-      "icon": "build/cc.icns"
+      "icon": "app/build/cc.icns"
     },
     "linux": {
       "category": "Utility",
@@ -59,7 +59,7 @@
       "target": [
         "nsis"
       ],
-      "icon": "build/cc.png"
+      "icon": "app/build/cc.png"
     },
     "files": [
       {

@@ -38,6 +38,10 @@ module.exports = {
     addMyPlugin()
     // overrideOutput()
   ),
+  paths: (paths, env) => {
+    paths.appBuild = paths.appBuild.replace(/(.*)\/build/, `$1/app/build`);
+    return paths;
+  },
   jest(config) {
     config.testMatch = ['**/__tests__/*.js?(x)'];
     return config;
