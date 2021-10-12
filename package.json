@@ -84,7 +84,7 @@
     "babel-plugin-import": "^1.11.0",
     "circular-dependency-plugin": "^5.0.2",
     "customize-cra": "^0.2.12",
-    "electron": "7.0.0-beta.6",
+    "electron": "11.5.0",
     "electron-builder": "^21.2.0",
     "eslint-config-airbnb": "^17.1.0",
     "eslint-config-prettier": "^4.1.0",

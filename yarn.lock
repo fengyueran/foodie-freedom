@@ -1013,11 +1013,7 @@
   version "4.1.5"
   resolved "https://registry.npm.taobao.org/@types/debug/download/@types/debug-4.1.5.tgz#b14efa8852b7768d898906613c23f688713e02cd"
 
-"@types/node@*":
-  version "12.7.12"
-  resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-12.7.12.tgz#7c6c571cc2f3f3ac4a59a5f2bd48f5bdbc8653cc"
-
-"@types/node@^12.0.12":
+"@types/node@*", "@types/node@^12.0.12":
   version "12.11.1"
   resolved "https://registry.npm.taobao.org/@types/node/download/@types/node-12.11.1.tgz?cache=0&sync_timestamp=1571183972817&other_urls=https%3A%2F%2Fregistry.npm.taobao.org%2F%40types%2Fnode%2Fdownload%2F%40types%2Fnode-12.11.1.tgz#1fd7b821f798b7fa29f667a1be8f3442bb8922a3"
 
@@ -3452,9 +3448,9 @@ electron-to-chromium@^1.3.103, electron-to-chromium@^1.3.247:
   version "1.3.281"
   resolved "https://registry.npm.taobao.org/electron-to-chromium/download/electron-to-chromium-1.3.281.tgz#2dbeb9f0bdffddb1662f9ca00d26c49d31dc0f7e"
 
-electron@7.0.0-beta.6:
-  version "7.0.0-beta.6"
-  resolved "https://registry.npm.taobao.org/electron/download/electron-7.0.0-beta.6.tgz#f59f8bb8ed61fa2bca9b9a98a28d09ea70b4f5a5"
+electron@11.5.0:
+  version "11.5.0"
+  resolved "https://registry.yarnpkg.com/electron/-/electron-11.5.0.tgz#f1650543b9d8f2047d3807755bdb120153ed210f"
   dependencies:
     "@electron/get" "^1.0.1"
     "@types/node" "^12.0.12"
@@ -4906,13 +4902,6 @@ http-signature@~1.2.0:
 https-browserify@^1.0.0:
   version "1.0.0"
   resolved "https://registry.npm.taobao.org/https-browserify/download/https-browserify-1.0.0.tgz#ec06c10e0a34c0f2faf199f7fd7fc78fffd03c73"
-
-https-proxy-agent@^2.2.1:
-  version "2.2.2"
-  resolved "https://registry.npm.taobao.org/https-proxy-agent/download/https-proxy-agent-2.2.2.tgz#271ea8e90f836ac9f119daccd39c19ff7dfb0793"
-  dependencies:
-    agent-base "^4.3.0"
-    debug "^3.1.0"
 
 https-proxy-agent@^3.0.0:
   version "3.0.1"
@@ -7986,26 +7975,13 @@ punycode@^1.2.4, punycode@^1.4.1:
   version "1.4.1"
   resolved "https://registry.npm.taobao.org/punycode/download/punycode-1.4.1.tgz#c0d5a63b2718800ad8e1eb0fa5269c84dd41845e"
 
-puppeteer-core@^2.0.0:
+puppeteer-core@2.0.0:
   version "2.0.0"
-  resolved "https://registry.npm.taobao.org/puppeteer-core/download/puppeteer-core-2.0.0.tgz#2c3b122dec539ff01e6dfc29ee3e6f3a6280330d"
+  resolved "https://registry.yarnpkg.com/puppeteer-core/-/puppeteer-core-2.0.0.tgz#2c3b122dec539ff01e6dfc29ee3e6f3a6280330d"
   dependencies:
     debug "^4.1.0"
     extract-zip "^1.6.6"
     https-proxy-agent "^3.0.0"
-    mime "^2.0.3"
-    progress "^2.0.1"
-    proxy-from-env "^1.0.0"
-    rimraf "^2.6.1"
-    ws "^6.1.0"
-
-puppeteer@^1.20.0:
-  version "1.20.0"
-  resolved "https://registry.npm.taobao.org/puppeteer/download/puppeteer-1.20.0.tgz#e3d267786f74e1d87cf2d15acc59177f471bbe38"
-  dependencies:
-    debug "^4.1.0"
-    extract-zip "^1.6.6"
-    https-proxy-agent "^2.2.1"
     mime "^2.0.3"
     progress "^2.0.1"
     proxy-from-env "^1.0.0"
